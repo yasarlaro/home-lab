@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # Box name
+  config.vm.box = "{{ jenkins_box }}"
+ 
+  # VirtualBox configuration
+  config.vm.provider "virtualbox" do |v|
+    v.name = "{{ jenkins_hostname }}"
+    v.memory = {{ jenkins_memory }}
+    v.cpus = {{ jenkins_cpu }}
+  end
+  # Public network interface 
+  config.vm.network "public_network", bridge: "{{ public_interface }}"
+
+  # Shared folder between VM and host
+  config.vm.synced_folder "{{ jenkins_shared_dir }}", "{{ vm_shared_dir }}"
+
+  # VM hostname
+  config.vm.hostname = "{{ jenkins_hostname }}"
+
+  # Additional package installation
+  config.vm.provision "shell", inline: <<-SHELL
+     yum install -y java > /dev/null
+     yum install -y {{ jenkins_rpm }} > /dev/null
+     firewall-cmd --add-port=8080/tcp --permanent > /dev/null
+     firewall-cmd --reload > /dev/null
+     systemctl enable jenkins > /dev/null
+     systemctl start jenkins > /dev/null
+     sleep 5 # to be able to see the admin password
+     bash {{ vm_shared_dir }}/{{ jenkins_init_script }}
+  SHELL
+
+end

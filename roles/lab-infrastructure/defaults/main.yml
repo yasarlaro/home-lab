@@ -1,0 +1,20 @@
+---
+# defaults file for lab-infrastructure
+#
+# Lab variables
+shared_dir: /home/onur/vagrant
+public_interface: eno1
+vm_shared_dir: /vagrant_share
+
+# Components
+lab_jenkins: true
+
+# Default variables
+jenkins_box: generic/centos7
+jenkins_hostname: jenkins.onur.lab
+jenkins_memory: 4096
+jenkins_cpu: 2
+jenkins_dir: "{{ shared_dir }}/{{ jenkins_hostname }}"
+jenkins_shared_dir: "{{ jenkins_dir }}/shared"
+jenkins_init_script: jenkins_info.sh
+jenkins_rpm: https://pkg.jenkins.io/redhat/jenkins-2.205-1.1.noarch.rpm

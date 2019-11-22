@@ -1,0 +1,4 @@
+---
+# tasks file for lab-infrastructure
+- include: jenkins.yml
+  when: lab_jenkins|bool
