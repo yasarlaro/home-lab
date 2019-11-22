@@ -1,0 +1,48 @@
+---
+# tasks file for lab-prereq
+- name: Updating host
+  yum:
+    name: '*'
+    state: latest
+  register: update_status
+
+- name: Reboot host after update
+  reboot:
+    reboot_timeout: 600
+  when: update_status is changed
+
+- name: Install prerequisite packages
+  dnf:
+    name:
+      - gcc
+      - make
+      - perl 
+      - kernel-devel
+      - kernel-headers
+      - elfutils-libelf-devel
+    state: latest
+
+- name: Add VirtualBox repository
+  yum_repository:
+    name: "virtualbox"
+    description: "Oracle Linux / RHEL / CentOS-$releasever / $basearch - VirtualBox"
+    baseurl: http://download.virtualbox.org/virtualbox/rpm/el/$releasever/$basearch
+    gpgkey: "https://www.virtualbox.org/download/oracle_vbox.asc"
+    gpgcheck: yes
+    repo_gpgcheck: yes
+
+- name: Import VirtualBox repo GPG key
+  rpm_key:
+    state: present
+    key: https://www.virtualbox.org/download/oracle_vbox.asc
+    
+- name: Install VirtualBox-6
+  dnf:
+    name: VirtualBox-6.0
+    state: latest
+
+- name: Install Vagrant
+  dnf:
+    name: "https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.rpm"
+    state: present
+
