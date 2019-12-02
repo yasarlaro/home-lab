@@ -1,0 +1,33 @@
+---
+- name: Create main and shared directory or Kubernetes environment
+  file:
+    path: "{{ k8s_vagrant_dir }}/kubernetes-setup"
+    state: directory
+    recurse: yes
+    mode: 0755
+    owner: onur
+    group: onur
+
+- name: Deploy Vagrant file
+  template:
+    src: kubernetes_vagrant.j2
+    dest: "{{ k8s_vagrant_dir }}/Vagrantfile"
+    owner: onur
+    group: onur
+    mode: 0644
+
+- name: Copy ansible playbooks
+  copy:
+    src: "{{ item }}"
+    dest: "{{ k8s_vagrant_dir }}/kubernetes-setup/{{ item }}"
+    mode: 0644
+    owner: onur
+    group: onur
+  loop:
+    - master-playbook.yml
+    - node-playbook.yml
+
+- name: Create K8s cluster
+  shell: vagrant up
+  args:
+    chdir: "{{ k8s_vagrant_dir }}"

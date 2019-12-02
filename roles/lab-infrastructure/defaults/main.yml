@@ -7,9 +7,10 @@ public_interface: eno1
 vm_shared_dir: /vagrant_share
 
 # Components
-lab_jenkins: true
+lab_jenkins: false
+lab_kubernetes: true
 
-# Default variables
+# Default jenkins variables
 jenkins_box: generic/centos7
 jenkins_hostname: jenkins.onur.lab
 jenkins_memory: 4096
@@ -18,3 +19,8 @@ jenkins_dir: "{{ shared_dir }}/{{ jenkins_hostname }}"
 jenkins_shared_dir: "{{ jenkins_dir }}/shared"
 jenkins_init_script: jenkins_info.sh
 jenkins_rpm: https://pkg.jenkins.io/redhat/jenkins-2.205-1.1.noarch.rpm
+
+# Default K8s variables
+k8s_box: bento/ubuntu-16.04
+k8s_node_count: 2
+k8s_vagrant_dir: /home/onur/vagrant/k8s-test
