@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # Box name
+  config.vm.box = "{{ jenkins_box }}"
+ 
+  # VirtualBox configuration
+  config.vm.provider "virtualbox" do |v|
+    v.name = "{{ jenkins_hostname }}"
+    v.memory = {{ jenkins_memory }}
+    v.cpus = {{ jenkins_cpu }}
+  end
+
+  # VM hostname
+  config.vm.hostname = "{{ jenkins_hostname }}"
+
+  # Port forwarding
+  config.vm.network "forwarded_port", guest: 8080, host: {{ jenkins_forward_port }}
+  config.vm.network "forwarded_port", guest: 22, host: 2020
+
+  # Reset VM MAC address
+  config.vm.base_mac = nil
+
+  # Inject admin user's ssh public key
+  #config.ssh.insert_key = false
+  #config.vm.provision "file", source: "ssh_keys/{{ admin_user}}_pub", destination: "~/.ssh/authorized_keys"
+  #config.vm.provision "file", source: "ssh_keys/{{ admin_user}}_pub", destination: "~/.ssh/authorized_keys"
+
+  # Additional package installation
+  config.vm.provision "shell", inline: <<-SHELL
+     yum install -y java > /dev/null
+     yum install -y {{ jenkins_rpm }} > /dev/null
+     firewall-cmd --add-port=8080/tcp --permanent > /dev/null
+     firewall-cmd --reload > /dev/null
+     systemctl enable jenkins > /dev/null
+     systemctl start jenkins > /dev/null
+  SHELL
+
+end
