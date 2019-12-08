@@ -1,9 +1,12 @@
 ---
 - name: Setup Lab Infrastructure Play
   hosts: hypervisor
-  #hosts: hypervisor
-  remote_user: onur
+  vars:
+    admin_user: onur
+  remote_user: "{{ admin_user }}"
   roles:
-    #- role: lab-prereq
-    #become: yes
-    - role: lab-infrastructure
+    #- role: yasarlaro.virtualbox
+    #  become: yes
+    #- role: yasarlaro.vagrant
+    #  become: yes
+    - role: yasarlaro.jenkins-vagrant

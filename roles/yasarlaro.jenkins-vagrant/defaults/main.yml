@@ -1,0 +1,12 @@
+---
+# defaults file for yasarlaro.jenkins-vagrant
+admin_user: onur
+admin_group: onur
+jenkins_box: generic/centos7
+jenkins_version: 2.205-1.1
+jenkins_hostname: jenkins.onur.lab
+jenkins_dir: "/home/{{ admin_user }}/vagrant/{{ jenkins_hostname }}" 
+jenkins_rpm: "https://pkg.jenkins.io/redhat/jenkins-{{ jenkins_version }}.noarch.rpm"
+jenkins_memory: 4096 
+jenkins_cpu: 1
+jenkins_forward_port: 8088
