@@ -1,9 +1,0 @@
----
-- name: Setup Lab Infrastructure Play
-  hosts: hypervisor
-  #hosts: hypervisor
-  remote_user: onur
-  roles:
-    #- role: lab-prereq
-    #become: yes
-    - role: lab-infrastructure
