@@ -39,3 +39,5 @@ Then you can run the playbook as below:
 ```
 ansible-playbook -i inventory main.yml
 ```
+### License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
