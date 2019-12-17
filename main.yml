@@ -1,8 +1,8 @@
 ---
 - name: Setup Lab Infrastructure Play
   hosts: hypervisor
-  vars:
-    admin_user: onur
+  vars_files:
+    - vars/infrastructure.yml
   remote_user: "{{ admin_user }}"
   roles:
     #- role: yasarlaro.virtualbox

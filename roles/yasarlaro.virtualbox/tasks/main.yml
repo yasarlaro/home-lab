@@ -20,6 +20,8 @@
       - kernel-devel
       - kernel-headers
       - elfutils-libelf-devel
+      - xorg-x11-xauth
+      - xorg-x11-apps
     state: latest
 
 - name: Add VirtualBox repository
@@ -36,7 +38,7 @@
     state: present
     key: https://www.virtualbox.org/download/oracle_vbox.asc
     
-- name: "Install VirtualBox-{{ virtualbox_version }}"
+- name: "Install VirtualBox-{{ hypervisor.virtualbox_version }}"
   yum:
-    name: "VirtualBox-{{ virtualbox_version }}"
+    name: "VirtualBox-{{ hypervisor.virtualbox_version }}"
     state: present

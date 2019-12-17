@@ -1,7 +1,0 @@
----
-# tasks file for lab-infrastructure
-- include: jenkins.yml
-  when: lab_jenkins|bool
-
-- include: kubernetes.yml
-  when: lab_kubernetes|bool

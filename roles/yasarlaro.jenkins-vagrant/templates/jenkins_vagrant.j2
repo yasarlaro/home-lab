@@ -7,7 +7,7 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   # Box name
-  config.vm.box = "{{ jenkins_box }}"
+  config.vm.box = "{{ jenkins_vagrant_box }}"
  
   # VirtualBox configuration
   config.vm.provider "virtualbox" do |v|
@@ -19,17 +19,11 @@ Vagrant.configure("2") do |config|
   # VM hostname
   config.vm.hostname = "{{ jenkins_hostname }}"
 
-  # Port forwarding
-  config.vm.network "forwarded_port", guest: 8080, host: {{ jenkins_forward_port }}
-  config.vm.network "forwarded_port", guest: 22, host: 2020
-
   # Reset VM MAC address
   config.vm.base_mac = nil
 
-  # Inject admin user's ssh public key
-  #config.ssh.insert_key = false
-  #config.vm.provision "file", source: "ssh_keys/{{ admin_user}}_pub", destination: "~/.ssh/authorized_keys"
-  #config.vm.provision "file", source: "ssh_keys/{{ admin_user}}_pub", destination: "~/.ssh/authorized_keys"
+  # Set public ip address
+  config.vm.network "public_network", ip: "{{ jenkins_ip }}", bridge: "{{ hypervisor.bridge_adapter }}"
 
   # Additional package installation
   config.vm.provision "shell", inline: <<-SHELL
