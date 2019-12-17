@@ -1,0 +1,23 @@
+---
+# tasks file for yasarlaro.jenkins-vagrant
+- name: Create jenkins vagrant directory
+  file:
+    path: "{{ jenkins_vagrant_directory }}"
+    state: directory
+    recurse: true
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: 0755
+
+- name: Deploy Vagrant file
+  template:
+    src: jenkins_vagrant.j2
+    dest: "{{ jenkins_vagrant_directory }}/Vagrantfile"
+    owner: onur
+    group: onur
+    mode: 0644
+
+- name: "Create Jenkins VM - {{ jenkins_hostname }} / {{ jenkins_ip }}" 
+  shell: vagrant up
+  args:
+    chdir: "{{ jenkins_vagrant_directory }}"

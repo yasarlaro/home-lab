@@ -1,0 +1,7 @@
+---
+# tasks file for yasarlaro.vagrant
+
+- name: "Install Vagrant version {{ hypervisor.vagrant_version }}"
+  yum:
+    name: "https://releases.hashicorp.com/vagrant/{{ hypervisor.vagrant_version }}/vagrant_{{ hypervisor.vagrant_version }}_x86_64.rpm"
+    state: present

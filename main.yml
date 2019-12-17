@@ -1,0 +1,12 @@
+---
+- name: Setup Lab Infrastructure Play
+  hosts: hypervisor
+  vars_files:
+    - vars/infrastructure.yml
+  remote_user: "{{ admin_user }}"
+  roles:
+    #- role: yasarlaro.virtualbox
+    #  become: yes
+    #- role: yasarlaro.vagrant
+    #  become: yes
+    - role: yasarlaro.jenkins-vagrant

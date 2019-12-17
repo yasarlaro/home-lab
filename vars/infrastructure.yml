@@ -1,0 +1,31 @@
+# User to keep vagrant box directories
+admin_user: onur
+admin_group: onur
+
+#lab_network is between 192.168.0.50 - 192.168.0.99
+
+# Main Lab Bare Metal server
+hypervisor:
+  hostname: "lab.onur.lab"
+  ip: "192.168.0.50"
+  bridge_adapter: "eno1"
+  virtualbox_version: "6.0"
+  vagrant_version: 2.2.6
+
+# Lab Infrastructure VMs
+# Jenkins
+jenkins_hostname: "jenkins.onur.lab"
+jenkins_ip: "192.168.0.51"
+jenkins_cpu: 1
+jenkins_memory: 2048
+jenkins_version: 2.205-1.1
+jenkins_vagrant_box: generic/centos7
+jenkins_vagrant_directory: "/home/{{ admin_user }}/vagrant/{{ jenkins_hostname }}"
+jenkins_rpm: "https://pkg.jenkins.io/redhat/jenkins-{{ jenkins_version}}.noarch.rpm"
+
+
+origin:
+  hostname: oc.onur.lab
+  ip: "192.168.0.52"
+  cpu: 4
+  memory: 8192
