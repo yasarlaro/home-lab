@@ -23,9 +23,27 @@ jenkins_vagrant_box: generic/centos7
 jenkins_vagrant_directory: "/home/{{ admin_user }}/vagrant/{{ jenkins_hostname }}"
 jenkins_rpm: "https://pkg.jenkins.io/redhat/jenkins-{{ jenkins_version}}.noarch.rpm"
 
+# Kubernetes cluster setup with 1 master and 2 nodes
+k8s_pod_subnet: "172.16.0.0"
+k8s_pod_cidr: "16"
+k8s_docker_version: "18.06.2.ce"
+k8s_calico_version: "3.8"
+k8s_version: "1.16.3"
 
-origin:
-  hostname: oc.onur.lab
-  ip: "192.168.0.52"
-  cpu: 4
-  memory: 8192
+k8s_master_hostname: k8s-master.onur.lab
+k8s_master_ip: 192.168.0.52
+k8s_master_cpu: 1
+k8s_master_memory: 2048
+k8s_master_vagrant_box:
+
+k8s_node1_hostname: k8s-node1.onur.lab
+k8s_node1_ip: 192.168.0.52
+k8s_node1_cpu: 1
+k8s_node1_memory: 2048
+k8s_node1_vagrant_box:
+
+k8s_node2_hostname: k8s-node2.onur.lab
+k8s_node2_ip: 192.168.0.53
+k8s_node2_cpu: 1
+k8s_node2_memory: 2048
+k8s_node2_vagrant_box:

@@ -9,4 +9,12 @@
     #  become: yes
     #- role: yasarlaro.vagrant
     #  become: yes
-    - role: yasarlaro.jenkins-vagrant
+    # - role: yasarlaro.jenkins-vagrant
+    - role: yasarlaro.vagrant-provisioner
+      vars:
+        box_name: "generic/centos7"
+        box_hostname: test1.onur.lab
+        box_memory: 4096
+        box_cpu: 2
+        box_ip: 192.168.0.154
+        box_directory: /home/onur/test1.onur.lab
