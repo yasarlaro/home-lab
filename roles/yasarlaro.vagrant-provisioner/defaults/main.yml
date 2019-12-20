@@ -1,0 +1,5 @@
+---
+# defaults file for yasarlaro.vagrant-provisioner  
+box_memory: 2048
+box_cpu: 1
+

@@ -1,0 +1,19 @@
+---
+# tasks file for yasarlaro.vagrant-provisioner
+- name: Create VM directory
+  file:
+    path: "{{ box_directory }}"
+    state: directory
+    recurse: true
+    mode: 0755
+
+- name: Deploy Vagrant file
+  template:
+    src: box_template.j2
+    dest: "{{ box_directory }}/Vagrantfile"
+    mode: 0644
+
+- name: "Create VM - {{ box_hostname }} / {{ box_ip }}" 
+  shell: vagrant up
+  args:
+    chdir: "{{ box_directory }}"
