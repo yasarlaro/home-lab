@@ -1,0 +1,6 @@
+---
+# handlers file for yasarlaro.k8s-node
+- name: docker start
+  service: 
+    name: docker 
+    state: started

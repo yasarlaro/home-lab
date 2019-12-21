@@ -1,0 +1,9 @@
+---
+# vars file for yasarlaro.k8s-master
+run_user: vagrant
+pod_subnet: "172.16.0.0"
+pod_cidr: "16"
+docker_version: "18.06.2.ce"
+calico_version: "3.8"
+k8s_version: "1.16.3"
+default_ip: "{{ ansible_eth1.ipv4.address }}"
