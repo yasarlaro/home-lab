@@ -1,20 +1,34 @@
 ---
-- name: Setup Lab Infrastructure Play
+- name: Provisioning lab infrastructure services and VMs
   hosts: hypervisor
+  remote_user: "{{ admin_user }}"
   vars_files:
     - vars/infrastructure.yml
-  remote_user: "{{ admin_user }}"
   roles:
-    #- role: yasarlaro.virtualbox
-    #  become: yes
-    #- role: yasarlaro.vagrant
-    #  become: yes
-    # - role: yasarlaro.jenkins-vagrant
+    # Install virtualbox
+    - role: yasarlaro.virtualbox
+      become: yes
+
+    # Install vagrant
+    - role: yasarlaro.vagrant
+      become: yes
+
+    # Provision Jenkins VM
     - role: yasarlaro.vagrant-provisioner
+      remote_user: "{{ admin_user }}"
       vars:
         box_name: "generic/centos7"
-        box_hostname: test1.onur.lab
+        box_hostname: jenkins.onur.lab
         box_memory: 4096
         box_cpu: 2
-        box_ip: 192.168.0.154
-        box_directory: /home/onur/test1.onur.lab
+        box_ip: 192.168.0.51
+        box_directory: "/home/onur/vagrant/{{ box_hostname }}"
+
+# Installation of infrastructure servers play
+- name: Installation of infrastructure services play
+  hosts: all
+  remote_user: vagrant
+  become: yes
+  roles:
+    - role: yasarlaro.jenkins
+      when: inventory_hostname in groups["jenkins"]

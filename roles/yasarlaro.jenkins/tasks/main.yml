@@ -1,0 +1,26 @@
+---
+# tasks file for yasarlaro.jenkins
+- name: Install Java
+  yum:
+    name: java
+    state: latest
+
+- name: Install Jenkins RPM
+  yum:
+    name: "https://pkg.jenkins.io/redhat/jenkins-{{ jenkins_rhel_version }}.noarch.rpm"
+    state: present
+
+- name: Allow 8080/tcp on firewalld
+  firewalld:
+    port: 8080/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Enable and start jenkins service
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
+

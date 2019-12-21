@@ -12,7 +12,7 @@
   when: update_status is changed
 
 - name: Install prerequisite packages
-  yum:
+  dnf:
     name:
       - gcc
       - make
@@ -22,6 +22,7 @@
       - elfutils-libelf-devel
       - xorg-x11-xauth
       - xorg-x11-apps
+    enablerepo: PowerTools
     state: latest
 
 - name: Add VirtualBox repository
