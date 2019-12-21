@@ -31,4 +31,4 @@
   become: yes
   roles:
     - role: yasarlaro.jenkins
-      when: inventory_hostname in groups["jenkins"]
+      when: inventory_hostname in groups["lab-jenkins"]
