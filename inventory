@@ -1,16 +1,16 @@
 [hypervisor]
 lab
 
-[lab-jenkins]
+[lab_jenkins]
 jenkins
 
-[lab-k8s-master]
+[lab_k8s_master]
 k8s-master
 
-[lab-k8s-nodes]
+[lab_k8s_nodes]
 k8s-node1
 k8s-node2
 
-[lab-k8s:children]
-k8s-master
-k8s-nodes
+[lab_k8s:children]
+lab_k8s_master
+lab_k8s_nodes
