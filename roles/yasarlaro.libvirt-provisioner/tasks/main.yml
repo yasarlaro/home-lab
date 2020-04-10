@@ -8,7 +8,7 @@
   
 - name: Debugging
   debug:
-    msg: my_user.stdout
+    msg: {{ my_user.stdout }}
     
 - name: Provision a new VM
   include: provision.yml
