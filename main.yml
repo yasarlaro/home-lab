@@ -1,6 +1,6 @@
 ---
 - name: Provisioning a new VM
-  hosts: localhost
+  hosts: all
   roles:
     # Install virtualbox
     - role: yasarlaro.libvirt-provisioner
