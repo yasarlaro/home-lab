@@ -1,0 +1,22 @@
+---
+# tasks file for yasarlaro.libvirt-provisioner
+#
+#
+- name: Check if project directory exists.
+  stat:
+    path: "{{ project_path }}/{{ vm_name }}"
+  register: project_dir
+
+- fail:
+    msg: "Project path does not exist - {{ project_path }}/{{ vm_name }}"
+  when:  not project_dir.stat.exists
+
+- name: Decommission VM
+  terraform:
+    project_path: "{{ project_path }}/{{ vm_name }}"
+    state: absent
+
+- name: Remove project path
+  file: 
+    path: "{{ project_path }}/{{ vm_name }}"
+    state: absent

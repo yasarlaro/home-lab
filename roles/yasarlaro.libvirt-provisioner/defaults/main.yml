@@ -1,0 +1,17 @@
+---
+# defaults file for yasarlaro.libvirt-provisioner
+#
+# Role defaults
+provision: false
+decommission: false
+
+# Libvirt defaults
+#
+storage_pool: "default"
+network_name: "default"
+vm_memory: "2048"
+vm_vcpu: 1
+project_path: "/root/terraform"
+image_type: local
+os_version: centos7
+vm_name: test_vm

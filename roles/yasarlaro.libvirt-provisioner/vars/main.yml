@@ -1,0 +1,16 @@
+---
+# vars file for yasarlaro.libvirt-provisioner
+#
+# Image Paths on Jenkins server
+images:
+  local:
+    centos7: /images/centos7.qcow2
+    centos8: /images/centos8.qcow2
+  cloud:
+    centos7: /images/CentOS-7-x86_64-GenericCloud.qcow2
+    centos8: /images/CentOS-8-GenericCloud-8.1.1911-20200113.3.x86_64.qcow2
+
+# Hypervisor variables
+libvirt_uri: "qemu+ssh://onur@192.168.122.1/system"
+
+

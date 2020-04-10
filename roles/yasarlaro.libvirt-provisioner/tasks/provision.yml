@@ -1,0 +1,44 @@
+---
+# tasks file for yasarlaro.libvirt-provisioner
+#
+#
+- name: Ansible check directory exists example.
+  stat:
+    path: "{{ project_path }}/{{ vm_name }}"
+  register: project_dir
+
+- fail:
+    msg: "Project path already exist - {{ project_path }}/{{ vm_name }}"
+  when: project_dir.stat.exists and project_dir.stat.isdir
+
+- name: Create project directory
+  file:
+    path: "{{ project_path }}/{{ vm_name }}"
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+
+- name: "Copy terraform template to project path"
+  template:
+    src: local.tf.j2
+    dest: "{{ project_path }}/{{ vm_name }}/{{ vm_name }}.tf"
+    mode: 0600
+    owner: root
+    group: root
+  when: image_type == "local"
+
+- name: "Copy terraform template to project path"
+  template:
+    src: cloud.tf.j2
+    dest: "{{ project_path }}/{{ vm_name }}/{{ vm_name }}.tf"
+    mode: 0600
+    owner: root
+    group: root
+  when: image_type == "cloud"
+
+- name: Provision VM
+  terraform:
+    force_init: yes
+    project_path: "{{ project_path }}/{{ vm_name }}"
+    state: present

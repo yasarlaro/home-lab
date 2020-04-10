@@ -1,0 +1,13 @@
+---
+# tasks file for yasarlaro.libvirt-provisioner
+#
+#
+- name: Provision a new VM
+  include: provision.yml
+  when: provision | bool
+
+- name: Decommission a VM
+  include: decomission.yml
+  when: decommission | bool
+
+

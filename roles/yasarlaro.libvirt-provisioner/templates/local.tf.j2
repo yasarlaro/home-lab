@@ -1,0 +1,35 @@
+provider "libvirt" {
+  uri = "{{ libvirt_uri }}"
+}
+
+resource "libvirt_volume" "{{ vm_name }}_volume" {
+  name = "{{ vm_name }}_volume"
+  pool = "{{ storage_pool }}"
+  source = "{{ images[image_type][os_version] }}"
+}
+
+resource "libvirt_domain" "{{ vm_name }}" {
+  name   = "{{ vm_name }}"
+  memory = "{{ vm_memory }}"
+  vcpu   = {{ vm_vcpu }}
+
+  disk {
+    volume_id = libvirt_volume.{{ vm_name }}_volume.id
+  }
+
+  network_interface {
+    network_name = "{{ network_name }}"
+  }
+
+  console {
+    type = "pty"
+    target_type = "serial"
+    target_port = "0"
+  }
+
+  graphics {
+    type = "spice"
+    listen_type = "address"
+    autoport = true
+  }
+}
