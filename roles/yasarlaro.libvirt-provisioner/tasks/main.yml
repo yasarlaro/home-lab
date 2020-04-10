@@ -2,6 +2,14 @@
 # tasks file for yasarlaro.libvirt-provisioner
 #
 #
+- name: Print user
+  shell: whoami
+  register: my_user
+  
+- name: Debugging
+  debug:
+    msg: my_user.stdout
+    
 - name: Provision a new VM
   include: provision.yml
   when: provision | bool
