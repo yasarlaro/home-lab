@@ -16,16 +16,12 @@
     path: "{{ project_path }}/{{ vm_name }}"
     state: directory
     mode: 0700
-    owner: root
-    group: root
 
 - name: "Copy terraform template to project path"
   template:
     src: local.tf.j2
     dest: "{{ project_path }}/{{ vm_name }}/{{ vm_name }}.tf"
     mode: 0600
-    owner: root
-    group: root
   when: image_type == "local"
 
 - name: "Copy terraform template to project path"
