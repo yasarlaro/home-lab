@@ -1,0 +1,59 @@
+---
+# tasks file for yasarlaro.kvm
+#
+- name: Check OS version
+  fail:
+    msg: "OS Version( {{ ansible_distribution }}{{ ansible_distribution_major_version }} ) is not certified for the module"
+  when:
+   - ansible_facts['distribution'] != "CentOS"
+   - ansible_facts['distribution_major_version'] != "7" or ansible_facts['distribution_major_version'] != "8"
+
+- name: Get CPU Virtualization Support
+  shell: 
+    cmd: egrep -o '(vmx|svm)' /proc/cpuinfo | sort | uniq | wc -l
+  register: cpuinfo_output
+
+- name: Check CPU Virtualization Support
+  fail:
+    msg: "CPU does not support virtualization"
+  when:
+    - cpuinfo_output.stdout != "1"
+
+- name: Install yum-utils 
+  yum:
+    name: yum-utils
+    state: present
+
+- name: Upgrade system
+  yum:
+    name: '*'
+    state: latest
+
+- name: Check if reboot is required
+  shell: /usr/bin/needs-restarting -r
+  ignore_errors: yes
+  register: needs_restarting
+
+- name: Reboot server if needed
+  reboot:
+    msg: "Reboot initiated by Ansible"
+    connect_timeout: 5
+    reboot_timeout: 600
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: whoami
+  when: needs_restarting.rc == 1
+
+- name: Load libvirt packages from variable file
+  include_vars: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}.yml"
+  
+- name: Install Libvirt Packages
+  yum:
+    name: "{{ libvirt_packages }}"
+    state: present
+
+- name: Enable and start libvirt service
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes	

@@ -1,0 +1,7 @@
+libvirt_packages:
+  - '@virt'
+  - libguestfs-tools
+  - virt-top
+  - virt-manager
+
+

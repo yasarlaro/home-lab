@@ -23,5 +23,5 @@ provision_k8s_nodes: false
 install_virtualbox: false
 install_vagrant: false
 install_jenkins: false
-install_k8s_master: true
-install_k8s_nodes: true
+install_k8s_master: false
+install_k8s_nodes: false
