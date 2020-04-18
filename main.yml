@@ -5,6 +5,11 @@
   vars_files:
     - vars/infrastructure.yml
   roles:
+    # Install KVM
+    - role: yasarlaro.kvm
+      become: yes
+      when: install_kvm
+
     # Install virtualbox
     - role: yasarlaro.virtualbox
       become: yes

@@ -21,6 +21,7 @@ provision_k8s_nodes: false
 
 # Install infrastructure services
 install_virtualbox: false
+install_kvm: false
 install_vagrant: false
 install_jenkins: false
 install_k8s_master: false
