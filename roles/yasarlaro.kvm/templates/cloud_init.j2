@@ -1,0 +1,53 @@
+#cloud-config
+ 
+# Hostname management
+preserve_hostname: False
+hostname: {{ vm_name }}
+fqdn: {{ vm_name}}.{{ domain_name }}
+ 
+# Users
+users:
+    - default
+    - name: {{ admin_user }}
+      groups: ['wheel']
+      shell: /bin/bash
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      ssh-authorized-keys:
+        - {{ admin_ssh_key }}
+ 
+# Configure where output will go
+output:
+  all: ">> /var/log/cloud-init.log"
+ 
+# configure interaction with ssh server
+ssh_genkeytypes: ['ed25519', 'rsa']
+ 
+# Install my public ssh key to the first user-defined user configured
+# in cloud.cfg in the template (which is centos for CentOS cloud images)
+ssh_authorized_keys:
+  - {{ admin_ssh_key }}
+ 
+# set timezone for VM
+# timezone: Asia/Dubai
+
+network:
+  version: 1
+  config:
+    - type: physical
+      name: eth0
+      subnets:
+         - type: static
+           address: 192.168.0.14/24
+           gateway: 192.168.0.14
+    - type: nameserver:
+      address:
+        - 192.168.23.2
+        - 8.8.8.8
+      search:
+        - exemplary
+
+
+# Remove cloud-init 
+runcmd:
+  - systemctl stop network && systemctl start network
+  - yum -y remove cloud-init

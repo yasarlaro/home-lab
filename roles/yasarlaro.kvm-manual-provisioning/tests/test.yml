@@ -1,0 +1,6 @@
+---
+- hosts: all
+  remote_user: onur
+  become: yes
+  roles:
+    - ../../yasarlaro.kvm-manual-provisioning

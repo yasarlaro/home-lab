@@ -1,0 +1,9 @@
+instance-id: {{ vm_name }}
+local-hostname: {{ vm_name }}.{{ vm_domain_name }}
+network-interfaces: |
+  auto {{ vm_interface_name }}
+  iface {{ vm_interface_name }} inet static
+  address {{ vm_ip }}
+  netmask {{ vm_netmask}}
+  gateway {{ vm_gw }}
+
