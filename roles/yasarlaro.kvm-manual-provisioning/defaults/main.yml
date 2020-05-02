@@ -1,0 +1,14 @@
+---
+# defaults file for yasarlaro.kvm-manual-provisioning
+admin_user: "onur"
+admin_group: "wheel"
+admin_password: "passw0rd"
+vm_cpu: "1"
+vm_memory: "1024"
+vm_root_disk_size: "20G"
+vm_domain_name: onur.lab
+#vm_name: "test-{{ 1000 | random }}"
+#vm_ip: "192.168.0.{{ 50 | random }}"
+vm_netmask: "255.255.255.0"
+vm_gw: "192.168.0.1"
+vm_interface_name: "eth0"

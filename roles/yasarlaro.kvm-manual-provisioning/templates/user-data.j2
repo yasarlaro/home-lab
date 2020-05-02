@@ -1,0 +1,12 @@
+#cloud-config
+# default password for admin user is passw0rd
+package_upgrade: true
+ssh_pwauth: True
+disable_root: false
+users:
+  - name: {{ admin_user }}
+    groups: {{ admin_group }}
+    lock_passwd: false
+    passwd: $6$oD834M7Xph6nbjFz$uU3yUr36SHQPX3gqT/hgsTFz2w5Qflrc.F40C/hebkn.kMiWrgXAAm8S4hNkAB/wCpB936UqMQTkvchls2w9F0
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']

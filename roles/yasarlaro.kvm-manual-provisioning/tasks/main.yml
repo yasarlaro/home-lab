@@ -1,0 +1,77 @@
+---
+# tasks file for yasarlaro.kvm-manual-provisioning
+- name: "Set VM name if it has not been defined"
+  set_fact:
+    vm_name: "test-{{ 1000 | random }}"
+  run_once: yes
+  when: vm_name is not defined
+
+- name: "Set VM IP address if it has not been defined"
+  set_fact:
+    vm_ip: "192.168.0.{{ 50 | random }}"
+  run_once: yes
+  when: vm_ip is not defined
+
+- name: "Print VM Information"
+  debug:
+    msg: "VM Information: {{ vm_name }} - {{ vm_ip }}"
+
+- name: "Check if Image file exists"
+  stat:
+    path: "{{ image_path }}/{{ image_name }}"
+  register: image_exist
+
+- name: "Download KVM Image file"
+  get_url:
+    url: "{{ image_url }}"
+    dest: "{{ image_path }}"
+  when: not image_exist.stat.isreg
+
+# Check if directory exists
+- name: "Check if VM directory exists"
+  stat:
+    path: "/var/lib/libvirt/images/{{ vm_name }}"
+  register: image_dir
+
+- fail:
+    msg: "VM Image directory already exists for {{ vm_name }}"
+  when: image_dir.stat.isdir is defined and image_dir.stat.isdir
+
+- name: "Create VM directory"
+  file:
+    path: "/var/lib/libvirt/images/{{ vm_name }}"
+    state: directory
+
+- name: "Copy image to VM directory"
+  copy:
+    src: "{{ image_path }}/{{ image_name }}"
+    dest: "/var/lib/libvirt/images/{{ vm_name }}/{{ vm_name }}.qcow2"
+    remote_src: yes
+
+- name: "Resize VM boot disk"
+  shell: "qemu-img resize {{ vm_name }}.qcow2 {{vm_root_disk_size}}"
+  args:
+    chdir: "/var/lib/libvirt/images/{{ vm_name }}/"
+
+- name: "Copy user-data and meta-data cloud-init tempalates"
+  template:
+    src: "{{ item }}"
+    dest: "/var/lib/libvirt/images/{{ vm_name }}/{{ item.split('.')[0] }}"
+  loop:
+    - meta-data.j2
+    - user-data.j2
+
+- name: "Install genisoimage to create iso"
+  yum:
+    name: genisoimage
+    state: present
+
+- name: Create cloud-init iso image
+  shell: "mkisofs -o {{ vm_name}}-cidata.iso -V cidata -J -r user-data meta-data"
+  args:
+    chdir: "/var/lib/libvirt/images/{{ vm_name }}/"
+
+- name: "Provision VM"
+  shell: "virt-install --import --name {{ vm_name}} --memory {{ vm_memory }} --vcpus {{ vm_cpu }} --cpu host --disk {{ vm_name}}.qcow2,format=qcow2,bus=virtio --disk {{ vm_name}}-cidata.iso,device=cdrom --network type=direct,source=eno1,source.mode=bridge --os-type=linux --os-variant=centos7.0 --graphics spice --noautoconsole"
+  args:
+    chdir: "/var/lib/libvirt/images/{{ vm_name }}/"
