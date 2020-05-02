@@ -15,6 +15,7 @@ hypervisor:
 # =====================================#
 # Provision environment flags          #
 # =====================================#
+provision_vm: false
 provision_jenkins: false
 provision_k8s_master: true
 provision_k8s_nodes: false
