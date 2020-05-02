@@ -19,6 +19,11 @@
     - role: yasarlaro.vagrant
       become: yes
       when: install_vagrant
+      
+    # Provision an infrastructure VM with virt-install
+    - role: yasarlaro.kvm-manual-provisioning
+      become: yes
+      when: provision_vm
 
     # Provision Jenkins VM
     - role: yasarlaro.vagrant-provisioner
